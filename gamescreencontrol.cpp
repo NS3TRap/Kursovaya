@@ -132,6 +132,7 @@ template<typename T> bool GameScreen::isThereAMovObject(int numDirection, T chec
             }
             iterBO++;
         }
+        //игрок vs бот пролетает снаряд
     } else if(numDirection == 3 || numDirection == 4){
         iterBO = buffObject.begin();
         while (iterBO != buffObject.end())
@@ -160,7 +161,7 @@ void GameScreen::Update(){
     iterRS = vecBoxLives.begin();
     while (iterRS != vecBoxLives.end())
     {
-        if(ptrPlayer->getHealth() < vecBoxLives.size()){
+        if(ptrPlayer->getHealth() < vecBoxLives.size() || ptrBase->getHealth() < vecBoxLives.size()){
             delete (*iterRS);
             vecBoxLives.erase(iterRS);
         } else
@@ -175,6 +176,7 @@ void GameScreen::Update(){
             if((**iterLOW).getHealth() != 0)
                 win->draw((**iterLOW).getRectangleShape());
             else{
+                if(*iterLOW != ptrBase)
                 delete *iterLOW;
                 listOfWalls[i].erase(iterLOW);
             }
@@ -227,9 +229,24 @@ void GameScreen::Update(){
         else{
             delete *iterVOE;
             vecOfEnemy.erase(iterVOE);
+            *ptrScore += 50;
+            textCountEnemy.setString(String(to_string(--countEnemy)));
+            textScore.setString(String(to_string(*ptrScore)));
+            textScore.setPosition((win->getSize().x + gameBox.getGlobalBounds().width + 6 - textScore.getGlobalBounds().width)/2,
+                                  130+ textPreScore.getGlobalBounds().height);
             continue;
         }
         iterVOE++;
+    }
+
+    if(vecOfEnemy.size() < 2 && countEnemy >= 2){
+        vecOfEnemy.push_back(new Enemy(spawnPoint));
+        iterVOE = vecOfEnemy.begin();
+        iterVOE++;
+        if(isThereAMovObject(4, *iterVOE) || isThereAMovObject(3, *iterVOE) || isThereAMovObject(2, *iterVOE)|| isThereAMovObject(1, *iterVOE)){
+            delete *iterVOE;
+            vecOfEnemy.erase(iterVOE);
+        }
     }
 
     iterLOB = listOfBullets.begin();
@@ -253,7 +270,7 @@ void GameScreen::Update(){
         iterLOB++;
     }
 
-    if(ptrPlayer->getHealth() == 0)
+    if(ptrPlayer->getHealth() == 0 || ptrBase->getHealth() == 0 || countEnemy == 0)
         activeWin = false;
 }
 

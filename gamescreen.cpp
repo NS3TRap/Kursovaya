@@ -3,8 +3,9 @@
 using namespace sf;
 using namespace std;
 
-GameScreen::GameScreen(RenderWindow* window, int choiceMap): win(window), numberMap(choiceMap){
+GameScreen::GameScreen(RenderWindow* window, int choiceMap, int* score): win(window), numberMap(choiceMap), ptrScore(score){
     activeWin = true;
+    countEnemy = 8;
     // Шрифт
     setCentralPos(win);
     font.loadFromFile("Font/Pixeled.ttf");
@@ -32,7 +33,7 @@ GameScreen::GameScreen(RenderWindow* window, int choiceMap): win(window), number
     textPreCE.setPosition((win->getSize().x + gameBox.getGlobalBounds().width + 6 - textPreCE.getGlobalBounds().width)/2,
                           textScore.getPosition().y + 100);
 
-    textCountEnemy = Text("8", font);
+    textCountEnemy = Text(String(to_string(countEnemy)), font);
     textCountEnemy.setCharacterSize(30);
     textCountEnemy.setFillColor(Color::Red);
     textCountEnemy.setPosition((win->getSize().x + gameBox.getGlobalBounds().width + 6 - textCountEnemy.getGlobalBounds().width)/2,
@@ -60,6 +61,8 @@ GameScreen::GameScreen(RenderWindow* window, int choiceMap): win(window), number
     mapLoad->setElementsToVector(&listOfWalls, &vecOfEnemy);
     ptrPlayer = new Player(mapLoad->getStartPlayerPosition());
     ptrPlayer->setNumDirection(1);
+    ptrBase = mapLoad->getBasePtr();
+    spawnPoint = mapLoad->getSpawnPoint();
     delete mapLoad;
 }
 
@@ -85,6 +88,15 @@ GameScreen::~GameScreen(){
         delete *iterVOE;
         vecOfEnemy.erase(iterVOE);
     }
+
+    while (!listOfBullets.empty())
+    {
+        iterLOB = listOfBullets.begin();
+        delete *iterLOB;
+        listOfBullets.erase(iterLOB);
+    }
+
+    delete ptrPlayer;
 }
 
 void GameScreen::show(){

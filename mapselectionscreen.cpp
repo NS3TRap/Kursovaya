@@ -5,6 +5,7 @@ MapSelectionScreen::MapSelectionScreen(RenderWindow* window): win(window)
 {
     activeWin = true;
     choice = 1;
+    score = 0;
     // Шрифт
     setCentralPos(win);
     font.loadFromFile("Font/Pixeled.ttf");
@@ -67,9 +68,12 @@ void MapSelectionScreen::HandlingKeyPress(){
     if(ev.key.code == Keyboard::Enter){
         switch (choice) {
         case 1:
-            gameScreen = new GameScreen(win, choice);
+            gameScreen = new GameScreen(win, choice, &score);
             gameScreen->show();
             delete gameScreen;
+            inputRS = new InputRecordScreen(win, score);
+            inputRS->show();
+            delete inputRS;
             break;
         case 2:
             //map2

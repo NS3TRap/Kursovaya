@@ -7,24 +7,24 @@
 #include "object.h"
 #include "player.h"
 #include "bullet.h"
+#include "base.h"
 #include "enemy.h"
 #include <stdlib.h>
 #include <windows.h>
 using namespace sf;
 using namespace std;
-// РАЗЛИЧНЫЕ ПРОВЕРКИ НА ПОПАДАНИЯ ДЛЯ ТАНКОВ ЛУЧШЕ СДЕЛАТЬ В ЕДИНОМ МЕТОДЕ. МОЖНО ИСПОЛЬЗОВАТЬ ВЕКТОР ТАНКОВ. ИГРОК ВСЕГДА БУДЕТ ПЕРВЫМ
-// В ВЕКТОРЕ, А ВРАГИ ДАЛЬШЕ, НО ЭТО НА КРАСОТУ РАБОТА(НЕОБЯЗ).
-// НОМАНА ДЕЛАЙ. ВМЕСТО ВОЗВРАТА + ИЛИ - СДЕЛАТЬ ВОЗВРАТ ССЫЛКИ НА ОБЪЕКТ, ИНАЧЕ ВЕРНУТЬ NULL. И НЕ НАДО БУДЕТ КОСТЫЛИТЬ С БУФЕРНЫМИ ПЕРЕМЕНКАМИ.
-class GameScreen: Screens // В ЭТОМ КЛАССЕ ЕСТЬ КОТРОЛЬ УПРАВЛЕНИЯ И ОБРАБОТКА ВИЗУАЛА. НАДО ОТДЕЛЬНО СДЕЛАТЬ!
-{
+
+class GameScreen: Screens {
 //-Поля-###############################################################################################
 private:
     RenderWindow* win; // окно
     bool activeWin;    // активное окно
     int numberMap;     // номер карты
+    int* ptrScore;
     //-------------------------------------------------------------
     RectangleShape gameBox;                     // игровое поле
     Text textPreScore,textScore;                // счет игрока
+    int countEnemy;
     Text textPreCE,textCountEnemy;              // количество оставшихся врагов
     Texture livesTexture;                       // текстура жизней
     Text textPreLives;                          // текст к картинкам с жизнями
@@ -34,15 +34,17 @@ private:
     vector<vector<StationaryObj*>> listOfWalls;        // список стен(упорядоченный)
     vector<StationaryObj*>::iterator iterLOW;          // итератор
     StationaryObj* ptrWall;
+    Base* ptrBase;
     MovingObj* ptrMovObject;
     vector<Bullet*> listOfBullets;              // список всех пуль
     vector<Bullet*>::iterator iterLOB;          // итератор
+    Vector2f spawnPoint;
     vector<Enemy*> vecOfEnemy;                  // вектор врагов
     vector<Enemy*>::iterator iterVOE;           // итератор
     Player* ptrPlayer;                          // указатель на объект игрока
 //-Методы-#############################################################################################
 public:
-    GameScreen(RenderWindow*, int);
+    GameScreen(RenderWindow*, int, int*);
     ~GameScreen();
     void show();
 private:

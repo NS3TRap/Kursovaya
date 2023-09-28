@@ -16,12 +16,16 @@ void Base::changeHealth(){
     health -= 1;
 }
 
+void Base::changeHealth(int i){
+    health -= 1;
+}
+
 float Base::getX(){
-    return x;
+    return obj.getPosition().x;
 }
 
 float Base::getY(){
-    return y;
+    return obj.getPosition().y;
 }
 
 Vector2f Base::getSize(){
@@ -34,4 +38,8 @@ int Base::getHealth(){
 
 bool Base::getTypeDestroy(){
     return destroyable;
+}
+
+RectangleShape Base::getRectangleShape(){
+    return obj;
 }

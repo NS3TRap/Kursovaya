@@ -33,8 +33,14 @@ void Map::setElementsToVector(vector<vector<StationaryObj*>>* listOfWalls, vecto
                 rowObjects.push_back(new MetalWall(X,Y));
             else if(mapLayout[i][j] == '5')
                 startPlayerPosition = Vector2f(X,Y);
-            else if(mapLayout[i][j] == '4')
+            else if(mapLayout[i][j] == '4'){
                 vecOfEnemy->push_back(new Enemy(Vector2f(X, Y)));
+                spawnPoint = Vector2f(X, Y);
+            }
+            else if(mapLayout[i][j] == '#'){
+                basePtr = new Base(X,Y);
+                rowObjects.push_back(basePtr);
+            }
             X += 64;
         }
         listOfWalls->push_back(rowObjects);
@@ -42,6 +48,14 @@ void Map::setElementsToVector(vector<vector<StationaryObj*>>* listOfWalls, vecto
     }
 }
 
+Vector2f Map::getSpawnPoint(){
+    return spawnPoint;
+}
+
 Vector2f Map::getStartPlayerPosition(){
     return startPlayerPosition;
+}
+
+Base* Map::getBasePtr(){
+    return basePtr;
 }

@@ -78,13 +78,13 @@ void Enemy::setNumDirection(int numDir){
 
 void Enemy::Move(){
     if(numDirection == 1)
-        obj.move(0,-1);//РІРїРµСЂРµРґ
+        obj.move(0,-1);//вперед
     else if(numDirection == 2)
-        obj.move(0,1);//РІРЅРёР·
+        obj.move(0,1);//вниз
     else if(numDirection == 3)
-        obj.move(-1,0);//РІР»РµРІРѕ
+        obj.move(-1,0);//влево
     else if(numDirection == 4)
-        obj.move(1,0);//РІРїСЂР°РІРѕ
+        obj.move(1,0);//вправо
 }
 
 Bullet* Enemy::Fire(){

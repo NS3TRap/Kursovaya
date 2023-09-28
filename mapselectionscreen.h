@@ -3,6 +3,7 @@
 
 #include "screens.h"
 #include "gamescreen.h"
+#include "inputrecordscreen.h"
 
 class MapSelectionScreen: public Screens
 {
@@ -11,6 +12,7 @@ private:
     RenderWindow* win; // окно
     bool activeWin;
     int choice;
+    int score;
     //Объекты формы
     Text title; // Текст титульника вкладки
     //_____________________________________________________________
@@ -24,6 +26,7 @@ private:
     Text textBB;
     //_____________________________________________________________
     GameScreen* gameScreen;
+    InputRecordScreen* inputRS;
 //-Методы-#########################################################
 public:
     MapSelectionScreen(RenderWindow*);
